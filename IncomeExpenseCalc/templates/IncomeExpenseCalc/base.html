@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Income Expense Calculator</title>
+</head> 
+<body>
+    <p>user</p>
+     <a href="income/">income form </a>
+     <br>
+     <a href="expense/">expense from</a>
+     <ul class="list-group">
+        {% for income in income_objects %}
+        <li class="list-group-item">
+            <p class="display-6" class="shadow-lg p-3 mb-5 bg-body rounded">income:{{income.income}}</p> 
+            <p class="display-6" class="shadow-lg p-3 mb-5 bg-body rounded">amount:{{income.income_amount}}</p>
+            <p class="display-6" class="shadow-lg p-3 mb-5 bg-body rounded">time:{{income.income_instance_creation_date}}</p>
+
+           
+        </li>
+        {% endfor %}
+        
+    </ul>
+
+</body>
+</html>

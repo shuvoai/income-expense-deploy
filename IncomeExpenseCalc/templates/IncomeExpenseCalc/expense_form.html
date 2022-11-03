@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ICTRACTICAL</title>
+</head>
+<body>
+	<form action="" method="POST">
+        {% csrf_token %}
+        {{ expenseForm.as_p }}
+        <button name="save" type="submit" class="btn btn-success">Add New Item</button>
+    </form>
+</body>
+</html>
