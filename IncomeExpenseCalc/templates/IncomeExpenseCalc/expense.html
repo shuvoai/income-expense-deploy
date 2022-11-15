@@ -1,0 +1,210 @@
+{% extends 'IncomeExpenseCalc/base.html' %}
+{% load static %}
+
+{% block incomeform %}
+
+<div class="col-xxl-4 col-xl-12">
+
+    <div class="card info-card customers-card">
+
+      <div class="filter">
+        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+          <li class="dropdown-header text-start">
+            <h6>Filter</h6>
+          </li>
+
+          <li><a class="dropdown-item" href="#">Today</a></li>
+          <li><a class="dropdown-item" href="#">This Month</a></li>
+          <li><a class="dropdown-item" href="#">This Year</a></li>
+        </ul>
+      </div>
+
+      <div class="card-body">
+        <h5 class="card-title">Add New Expense</h5>
+
+        <div class="d-flex align-items-center">
+          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+            <img src=" {% static 'IncomeExpenseCalc/img/icons8-low-price-64.png' %}" alt="Profile" class="rounded-circle"  height="60px" width="60px" >
+          </div>
+          <div class="ps-3">
+            <h5 class="card-title">Select Expense and Amount</h5>
+                                    <form method="POST" action="/user/expense/" class="form-label">
+                                        {% csrf_token %}
+                 
+                                        {{ expenseform.expense }}
+                                        {{ expenseform.expense_amount }}
+                                        <button  type="submit" class="btn btn-primary">Add</button>
+
+                                    
+                                    </form>
+           
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- End Customers Card -->
+
+{% endblock incomeform %}
+
+{% block recent_sales %}
+<div class="col-12">
+  <div class="card recent-sales overflow-auto">
+
+    <div class="filter">
+      <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+        <li class="dropdown-header text-start">
+          <h6>Filter</h6>
+        </li>
+
+        <li><a class="dropdown-item" href="#">Today</a></li>
+        <li><a class="dropdown-item" href="#">This Month</a></li>
+        <li><a class="dropdown-item" href="#">This Year</a></li>
+      </ul>
+    </div>
+
+    <div class="card-body">
+      <h5 class="card-title">Your Expense <span>| Today</span></h5>
+
+      <table class="table table-borderless datatable">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">income</th>
+            <th scope="col">Income Date</th>
+            <th scope="col">Income Amount</th>
+        
+          </tr>
+        </thead>
+        <tbody>
+          {% for expense in expense_objects %}
+          <tr>
+            <th scope="row">{{expense.expense_id}}  </a></th>
+            <td> {{expense.expense}} </td>
+            <td> {{expense.expense_instance_creation_date}} </td>
+            <td style="text-align:center"> {{expense.expense_amount}} </td>
+        
+          </tr>
+          {% endfor %}
+         
+         
+          
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+</div>
+{% endblock recent_sales %}
+
+
+{% block recent_activity %}
+<div class="card">
+  <div class="filter">
+    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+      <li class="dropdown-header text-start">
+        <h6>Filter</h6>
+      </li>
+
+      <li><a class="dropdown-item" href="#">Today</a></li>
+      <li><a class="dropdown-item" href="#">This Month</a></li>
+      <li><a class="dropdown-item" href="#">This Year</a></li>
+    </ul>
+  </div>
+
+  <div class="card-body">
+    <h5 class="card-title">Recent Expense <span>| Today</span></h5>
+    {% for expense in expense_log_date_ago_tuple %}
+    <div class="activity">
+
+      <div class="activity-item d-flex">
+        
+        <div class="activite-label">{{expense.1}} days ago</div>
+        <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+        <div class="activity-content">
+           
+            <strong>{{expense.0.0}}</strong> of {{expense.0.2}} was <span style="color: rgb(228, 6, 6)"> deducted </span>  
+            
+
+        </div>
+      </div><!-- End activity item-->
+
+
+      
+
+
+    
+
+      <div style="width: 5px;"></div>
+
+   
+
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+{% endblock recent_activity %}
+
+
+
+{% block website_traffic %}
+<div class="card">
+  <div class="filter">
+    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+      <li class="dropdown-header text-start">
+        <h6>Filter</h6>
+      </li>
+
+      <li><a class="dropdown-item" href="#">Today</a></li>
+      <li><a class="dropdown-item" href="#">This Month</a></li>
+      <li><a class="dropdown-item" href="#">This Year</a></li>
+    </ul>
+  </div>
+
+  <div class="card-body pb-0">
+    <h5 class="card-title">Expense Chart<span>| Today</span></h5>
+    <canvas id="doughnutChart" style="max-height: 400px;"></canvas>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  new Chart(document.querySelector('#doughnutChart'), {
+    type: 'doughnut',
+    data: {
+      labels: [{%for expense in expense_amount_sum_list%}'{{expense.expense}}',{%endfor%}],
+      datasets: [{
+        label: 'My First Dataset',
+        data: [{%for i in expense_amount_sum_list%}{{i.sum_products}},{%endfor%}],
+        backgroundColor: [
+          '#32cd4c',
+          '#ce1c1c',
+          'rgb(255, 205, 86)',
+        ],
+        hoverOffset: 4
+      }]
+    }
+  });
+});
+</script>
+<!-- End Doughnut CHart -->
+
+
+
+
+  </div>
+</div>
+
+
+</div>
+{% endblock website_traffic %}
+
+{% block date_query%}
+{{ block.super }}
+<input type="hidden" id="custId" name="expense" value="expense">
+{% endblock date_query %}

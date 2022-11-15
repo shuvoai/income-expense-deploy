@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>ICTRACTICAL</title>
-</head>
-<body>
+
 	<form action="" method="POST">
         {% csrf_token %}
         {{ incomeForm.as_p }}
-        <button name="save" type="submit" class="btn btn-success">Add New Item</button>
+        <button name="save" type="submit" class="btn btn-success">Add New Income</button>
     </form>
-</body>
-</html>

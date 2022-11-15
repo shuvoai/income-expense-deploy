@@ -3,6 +3,7 @@ from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 # Create your models here.
 
@@ -25,6 +26,11 @@ class Income(models.Model):
         ordering  = ["-income_instance_creation_date"]
         verbose_name = "Income data"
 
+    def date_exceed(self):
+        current_date = timezone.now()
+        difference =  current_date - self.income_instance_creation_date
+        return difference.days
+
 
 
 class Expense(models.Model):
@@ -46,3 +52,9 @@ class Expense(models.Model):
     class Meta:
         ordering = ["-expense_instance_creation_date"]
         verbose_name = "expense data"
+
+    def date_exceed(self):
+        current_time = timezone.now()
+        difference =  current_time - self.expense_instance_creation_date
+        return difference.days
+

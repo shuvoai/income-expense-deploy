@@ -1,0 +1,118 @@
+{% extends 'IncomeExpenseCalc/base.html' %}
+
+{% block date_query %}
+                <div class="card recent-sales overflow-auto">
+                  <div class="card-body">
+                    <h5 class="card-title">Search By date <span>| </span></h5>
+                    <form action="/user/expensereport/" method="POST">
+                      {% csrf_token %}
+
+                      <div style="display: grid;grid-template-columns: 1fr 1fr;grid-template-rows: 1fr;justify-content: center;">
+                        <div>
+                          <p>Start Date</p>
+                          <input type="datetime-local" id="birthdaytime" name="datetimestart" required data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        </div>
+                        <div>
+                          <p>End Date</p>
+                          <input type="datetime-local" id="birthdaytime" name="datetimeend" required data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+
+                        </div>
+                    
+                        
+          
+                      </div>
+                      <div style="margin: auto;"> 
+                        <button name="save" type="submit" class="btn btn-success" class='date-input-button' >Search</button>
+                      </div>
+                     
+                      
+                  </form>
+                  </div>
+
+                </div>
+{% endblock date_query %}
+{% block recent_sales %}
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Expense Report Card</h5>
+     
+      <!-- Active Table -->
+      <table class="table table-borderless">
+        <thead>
+          <tr>    
+            <th scope="col">Income</th>      
+            <th scope="col">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for income in income_objects %}
+          <tr>      
+            <td> {{income.income}} </td>
+            <td> {{income.sum_products}}</td>
+          </tr>
+          {% endfor %}  
+        <tr>            
+            <td><strong>Total</strong></td>
+            <td><strong>{{income_sum}} </strong> </td>
+        </tr>
+        <tr style="border-bottom: 1px solid #000;"> <td> </tr>
+        <thead>
+            <tr>    
+              <th scope="col">Expense</th>      
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+
+        
+          
+          {% for expense in expense_objects %}
+          <tr>
+    
+            <td>{{expense.expense}} </td>
+           
+            <td> {{expense.sum_products}} </td>
+
+          </tr>
+          {% endfor %}
+          <tr>            
+            <td><strong>Total</strong></td>
+            <td class=".table-active"><strong >{{expense_sum}}</strong></td>
+        </tr>
+         
+        </tbody>
+      </table>
+      <!-- End Tables without borders -->
+    <div style="height: 100px;"></div>
+      <table class="table table-striped">
+        <thead>
+        
+        </thead>
+        <tbody>
+          <tr>
+
+            <td>Total Income</h4></td>
+            <td>{{income_sum}}</td>
+
+          </tr>
+          <tr>
+    
+            <td>Total Expense</h4></td>
+            <td>{{expense_sum}}</td>
+          
+          </tr>
+          <tr>
+
+            <td style="text-align: right;">Balance:</h4></td>
+            <td>{{on_hand}} </td>
+          
+        
+          </tr>
+      
+        </tbody>
+      </table>
+
+     
+
+    </div>
+  </div>
+{% endblock recent_sales%}
